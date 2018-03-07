@@ -23,8 +23,11 @@
     "cors": "2.8.4",
     "dotenv": "5.0.0",
     "express": "4.16.2",
+    "https": "1.0.0",
     "moment": "2.20.1",
     "mongoose": "5.0.7",
-    "morgan": "1.9.0"
+    "morgan": "1.9.0",
+    "underscore": "1.8.3",
+    "yelp-fusion": "2.0.3"
   }
 }
