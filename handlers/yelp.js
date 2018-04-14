@@ -1,20 +1,21 @@
+'use strict';
+
 require('dotenv').config();
 
 import yelp from 'yelp-fusion';
-import https from 'https';
-import _ from 'underscore';
 
-const moment = require('moment');
 const client = yelp.client(process.env.YELP_API_KEY);
 
 class Yelp {
 
   /**
-   * Creates a review Yelp instance
+   * Creates a Yelp instance
    *
    */
 
-  //constructor() {}
+   constructor() {
+
+   }
 
   /**
    * Searchs Yelp on a given data set.
@@ -31,8 +32,7 @@ class Yelp {
 
             callback(error, null);
         });
-    ;
-  }
+    };
 }
 
 module.exports = Yelp;
