@@ -1,6 +1,8 @@
 import https from 'https';
 
-const personalToken = '2Z7WTXSWZLVA4N7LOME2';
+require('dotenv').config();
+
+const personalToken = process.env.EVENTBRITE_PERSONAL_TOKEN;
 
 console.log('personalToken', personalToken);
 
@@ -25,20 +27,21 @@ class Eventbright {
 
     getEventInfo(callback) {
         const options = {
-            hostname: 'eventbriteapi.com',
+            hostname: 'https://www.eventbriteapi.com',
             method:   'GET',
             path:     this._urlPath()
         };
 
-        const req = https.request((options, response) => {
-            console.log('response!@$@#', response);
+        const req = https.get(this._urlPath(), res => {
+            console.log('statusCode', res.statusCode);
+            console.log('res Headers', res.headers);
 
-             response.on('end', () => {
-
+             res.on('data', d => {
+                console.log('data', JSON.parse(d));
             });
         });
 
-        req.on('error', (error) => {
+        req.on('error', error => {
             console.log('Error: retreiving event info:', error);
 
             callback(error, null);
@@ -55,7 +58,7 @@ class Eventbright {
     */
 
     _urlPath() {
-        return `/v3/users/me/?token=${personalToken}`;
+        return `https://www.eventbriteapi.com/v3/users/me/?token=${personalToken}`;
     }
 }
 
