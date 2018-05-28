@@ -5,8 +5,6 @@ require('dotenv').config();
 const apiKey = process.env.FANDANGO_API_KEY;
 const sharedSecret = process.env.FANDANGO_SHARED_SECRET;
 
-console.log('apiKey', apiKey);
-
 var http = require('http');
 
 String.prototype.format = String.prototype.f = function() {

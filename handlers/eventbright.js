@@ -4,8 +4,6 @@ require('dotenv').config();
 
 const personalToken = process.env.EVENTBRITE_PERSONAL_TOKEN;
 
-console.log('personalToken', personalToken);
-
 class Eventbright {
 
     /**
