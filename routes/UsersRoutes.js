@@ -9,9 +9,15 @@ router.get('/', (req, res) => {
 });
 
 router.post(
-    '/create',
+    '/signUp',
     (req, res, next) => requiredParam(req, res, next, ['password', 'firstName', 'lastName', 'phone']),
-    UsersController.create
+    UsersController.signUp
+);
+
+router.post(
+    '/signIn',
+    (req, res, next) => requiredParam(req, res, next, ['password', 'phone']),
+    UsersController.signIn
 );
 
 module.exports = router;
