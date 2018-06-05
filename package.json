@@ -19,6 +19,7 @@
     "nodemon": "1.15.1"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "1.18.2",
     "cors": "2.8.4",
     "dotenv": "5.0.0",
@@ -30,8 +31,11 @@
     "mysql2": "^1.5.3",
     "nbrite": "0.2.0",
     "node-fetch": "2.1.2",
+    "passport": "^0.4.0",
+    "passport-http-bearer": "^1.0.1",
     "request": "2.85.0",
     "sequelize": "^4.37.10",
+    "sequelize-cli": "^4.0.0",
     "underscore": "1.8.3",
     "yelp-fusion": "2.0.3"
   }
