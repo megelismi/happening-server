@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
 
 router.post(
     '/signUp',
-    (req, res, next) => requiredParam(req, res, next, ['password', 'firstName', 'lastName', 'phone']),
+    (req, res, next) => requiredParam(req, res, next, ['password', 'phone']),
     UsersController.signUp
 );
 

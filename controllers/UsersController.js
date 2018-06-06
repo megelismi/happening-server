@@ -10,40 +10,37 @@ import {
 exports.signUp = async (req, res) => {
     let {
         phone,
-        password,
-        firstName,
-        lastName
+        password
     } = req.body;
 
     try {
+        phone = sanitizePhone(phone);
+
         const user = await User.findOne({ where: { phone } });
 
-        firstName = firstName.trim();
-        lastName  = lastName.trim();
-        password  = encryptPassword(password);
-        phone     = sanitizePhone(phone);
-
         if (user === null) {
+            password = encryptPassword(password);
+
             User.create({
-                firstName,
-                lastName,
                 password,
                 phone
             });
-        } else {
-            return res.send(500).json({
+        }
+        else {
+            return res.send(422).json({
                 errors: {
-                    app: 'Could not complete sign up, a user with that phone # already exists.'
+                    app: 'A user with that phone number already exists. Did you mean to sign in?'
                 }
             });
         }
-    } catch(err) {
+    }
+    catch(err) {
         console.error('error looking up user in db: ', err);
 
-        res.sendStatus(500);
+        res.status(500).json({ errors: { app: 'Opps! Something went wrong'}})
     }
 
-    return res.sendStatus(200);
+    return res.status(200).json({});
 };
 
 exports.signIn = async (req, res) => {
@@ -52,34 +49,35 @@ exports.signIn = async (req, res) => {
         password
     } = req.body;
 
-    phone = sanitizePhone(phone);
-
     try {
+        phone = sanitizePhone(phone);
+
         const user = await User.findOne({ where: { phone } });
 
         if (user === null) {
-            return res.status(500).json({
+            return res.status(422).json({
                 errors: {
                     app: 'We did not find that phone number in our records. Did you mean to sign in?'
                 }
             });
-        } else {
+        }
+        else {
             if (verifyPassword(password, user.password)) {
                 return res.status(200).json({ user: {
                    id:        user.id,
-                   firstName: user.firstName,
-                   lastName:  user.lastName,
                    phone:     user.phone
                }});
-            } else {
-                return res.status(401).json({
+            }
+            else {
+                return res.status(422).json({
                     errors: {
                         password: 'That password is incorrect. Please try again.'
                     }
                 });
             }
         }
-    } catch(err) {
+    }
+    catch(err) {
         console.error('error looking up user in the db: ', err);
 
         return res.status(500).json({

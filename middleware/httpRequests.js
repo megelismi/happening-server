@@ -29,7 +29,7 @@ export const requiredParam = (request, response, next, required) => {
     }
 
     if (missingRequiredParam) {
-        return response.status(500).json({ error: 'Missing required parameter(s)' });
+        return response.status(422).json({ error: 'Missing required parameter(s)' });
     }
 
     next();
