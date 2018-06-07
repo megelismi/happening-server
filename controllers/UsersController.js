@@ -25,6 +25,8 @@ exports.signUp = async (req, res) => {
                 password,
                 phone
             });
+            
+            return res.status(200).json({ user: { id: '0', phone: 'test' } });
         }
         else {
             return res.send(422).json({
@@ -37,10 +39,8 @@ exports.signUp = async (req, res) => {
     catch(err) {
         console.error('error looking up user in db: ', err);
 
-        res.status(500).json({ errors: { app: 'Opps! Something went wrong'}})
+        return res.sendStatus(500);
     }
-
-    return res.status(200).json({});
 };
 
 exports.signIn = async (req, res) => {
@@ -63,10 +63,7 @@ exports.signIn = async (req, res) => {
         }
         else {
             if (verifyPassword(password, user.password)) {
-                return res.status(200).json({ user: {
-                   id:        user.id,
-                   phone:     user.phone
-               }});
+                return res.status(200).json({ user: { id: user.id, phone: user.phone } });
             }
             else {
                 return res.status(422).json({
