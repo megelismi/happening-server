@@ -10,14 +10,16 @@ import {
 exports.signUp = async (req, res) => {
     let {
         phone,
-        password
+        password,
+        firstName,
+        lastName
     } = req.body;
 
     try {
+        phone = sanitizePhone(phone);
+
         const user = await User.findOne({
-            where: {
-                phone: sanitizePhone(phone)
-            }
+            where: { phone }
         });
 
         if (user === null) {
@@ -25,14 +27,18 @@ exports.signUp = async (req, res) => {
 
             User.create({
                 password,
-                phone
+                phone,
+                firstName,
+                lastName
             }).then(user => {
                 const newUser = user.dataValues;
 
                 return res.status(200).json({
                     user: {
-                        id:    newUser.id,
-                        phone: newUser.phone
+                        id:        newUser.id,
+                        phone:     newUser.phone,
+                        firstName: newUser.firstName,
+                        lastName:  newUser.lastName
                     }
                 })
             });
@@ -40,7 +46,7 @@ exports.signUp = async (req, res) => {
         else {
             return res.send(422).json({
                 errors: {
-                    app: 'A user with that phone number already exists. Did you mean to sign in?'
+                    phone: 'Phone number already exists'
                 }
             });
         }
@@ -64,9 +70,11 @@ exports.signIn = async (req, res) => {
         const user = await User.findOne({ where: { phone } });
 
         if (user === null) {
+            console.log(1);
+
             return res.status(422).json({
                 errors: {
-                    app: 'We did not find that phone number in our records. Did you mean to sign in?'
+                    phone: 'Phone number not found'
                 }
             });
         }
@@ -74,15 +82,17 @@ exports.signIn = async (req, res) => {
             if (verifyPassword(password, user.password)) {
                 return res.status(200).json({
                     user: {
-                        id:    user.id,
-                        phone: user.phone
+                        id:        user.id,
+                        phone:     user.phone,
+                        firstName: user.firstName,
+                        lastName:  user.lastName
                     }
                 });
             }
             else {
                 return res.status(422).json({
                     errors: {
-                        password: 'That password is incorrect. Please try again.'
+                        password: 'Password is incorrect.'
                     }
                 });
             }
@@ -97,5 +107,4 @@ exports.signIn = async (req, res) => {
             }
         });
     }
-
 };
