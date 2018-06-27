@@ -14,9 +14,11 @@ exports.signUp = async (req, res) => {
     } = req.body;
 
     try {
-        phone = sanitizePhone(phone);
-
-        const user = await User.findOne({ where: { phone } });
+        const user = await User.findOne({
+            where: {
+                phone: sanitizePhone(phone)
+            }
+        });
 
         if (user === null) {
             password = encryptPassword(password);
@@ -24,9 +26,16 @@ exports.signUp = async (req, res) => {
             User.create({
                 password,
                 phone
+            }).then(user => {
+                const newUser = user.dataValues;
+
+                return res.status(200).json({
+                    user: {
+                        id:    newUser.id,
+                        phone: newUser.phone
+                    }
+                })
             });
-            
-            return res.status(200).json({ user: { id: '0', phone: 'test' } });
         }
         else {
             return res.send(422).json({
@@ -63,7 +72,12 @@ exports.signIn = async (req, res) => {
         }
         else {
             if (verifyPassword(password, user.password)) {
-                return res.status(200).json({ user: { id: user.id, phone: user.phone } });
+                return res.status(200).json({
+                    user: {
+                        id:    user.id,
+                        phone: user.phone
+                    }
+                });
             }
             else {
                 return res.status(422).json({
