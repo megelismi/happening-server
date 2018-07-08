@@ -92,7 +92,7 @@ exports.signIn = async (req, res) => {
             else {
                 return res.status(422).json({
                     errors: {
-                        password: 'Password is incorrect.'
+                        password: 'Password is incorrect'
                     }
                 });
             }
@@ -103,7 +103,7 @@ exports.signIn = async (req, res) => {
 
         return res.status(500).json({
             errors: {
-                app: 'Oops! Something went wrong.'
+                app: 'Oops! Something went wrong'
             }
         });
     }

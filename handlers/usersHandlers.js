@@ -16,5 +16,4 @@ export const sanitizePhone = phone => {
     return phone.replace(/\D/g,"");
 };
 
-//
 
